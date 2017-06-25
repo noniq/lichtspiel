@@ -1,0 +1,4 @@
+TM_MAKE_RUN_TARGET=upload
+
+[ *.{cpp,h} ]
+fileType = source.c++.arduino
