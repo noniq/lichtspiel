@@ -1,27 +1,24 @@
 #include "Arduino.h"
-#include "Lichtspiel.h"
 #include "LEDs.h"
 
-LEDs::LEDs(uint8_t singleStripPin, uint8_t mainStripPin, uint8_t mainStripNumLEDs) {
-  numLEDs = mainStripNumLEDs;
-  singleStrip = Adafruit_NeoPixel(1, singleStripPin, NEO_RGB + NEO_KHZ800);
-  mainStrip = Adafruit_NeoPixel(mainStripNumLEDs, mainStripPin, NEO_GRB + NEO_KHZ800);
+void LEDs::init() {
+  FastLED.addLeds<WS2812, SINGLE_STRIP_PIN, RGB>(singleStrip, 1);
+  FastLED.addLeds<WS2812B, MAIN_STRIP_PIN, GRB>(mainStrip, MAIN_STRIP_NUM_LEDS);
   currentIndex = 0;
 }
 
-void LEDs::init() {
-  singleStrip.begin();
-  mainStrip.begin();
-}
-
 void LEDs::updateSingleLED(uint8_t colorR, uint8_t colorG, uint8_t colorB) {
-  singleStrip.setPixelColor(0, colorR, colorG, colorB);
-  singleStrip.show();
+  singleStrip[0].r = colorR;
+  singleStrip[0].g = colorG;
+  singleStrip[0].b = colorB;
 
-  mainStrip.setPixelColor(currentIndex, 55, 55, 55);
+  mainStrip[currentIndex] = 0;
   currentIndex++;
-  if (currentIndex >= numLEDs) currentIndex = 0;
-  mainStrip.setPixelColor(currentIndex, colorR, colorG, colorB);
-  mainStrip.show();
+  if (currentIndex >= MAIN_STRIP_NUM_LEDS) currentIndex = 0;
+  mainStrip[currentIndex].r = colorR;
+  mainStrip[currentIndex].g = colorG;
+  mainStrip[currentIndex].b = colorB;
+
+  FastLED.show();
 }
 

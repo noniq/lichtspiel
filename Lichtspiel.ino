@@ -2,19 +2,13 @@
 #include "LEDs.h"
 #include "Rotary.h"
 
-#include <Adafruit_NeoPixel.h>
-
-static const uint8_t SINGLE_RGB_LED_PIN = 6;
-static const uint8_t LED_STRIP_PIN = 5;
-static const uint8_t LED_STRIP_NUM_LEDS = 24;
-
 int sensorPin = A0;    // select the input pin for the potentiometer
 int ledPin = 9;      // select the pin for the LED
 int sensorValue = 0;  // variable to store the value coming from the sensor
 byte mapping[256];
 Rotary rotary;
 Rotary::Action action;
-LEDs leds(SINGLE_RGB_LED_PIN, LED_STRIP_PIN, LED_STRIP_NUM_LEDS);
+LEDs leds;
 
 void setup() {
   leds.init();

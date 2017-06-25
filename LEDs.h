@@ -2,17 +2,21 @@
 #define LEDS_H
 
 #include "Arduino.h"
-#include <Adafruit_NeoPixel.h>
+#include "FastLED.h"
+
+#define SINGLE_STRIP_PIN 6
+#define MAIN_STRIP_PIN 5
+#define MAIN_STRIP_NUM_LEDS 24
 
 class LEDs {
   public:
-    LEDs(uint8_t singleStripPin, uint8_t mainStripPin, uint8_t mainStripNumLEDs);
     void init();
     void updateSingleLED(uint8_t colorR, uint8_t colorG, uint8_t colorB);
 
   private:
-    Adafruit_NeoPixel mainStrip, singleStrip;
-    uint8_t numLEDs, currentIndex;
+    CRGB mainStrip[MAIN_STRIP_NUM_LEDS];
+    CRGB singleStrip[1];
+    uint8_t currentIndex;
 };
 
 #endif
