@@ -11,6 +11,11 @@ Rotary::Rotary() {
   _flags = 0;
 }
 
+void Rotary::setup() {
+  pinMode(ROTARY_PIN_A, INPUT_PULLUP);
+  pinMode(ROTARY_PIN_B, INPUT_PULLUP);
+}
+
 Rotary::Action Rotary::read() {
   Action action = NONE;
   uint8_t curPos = readEnc();

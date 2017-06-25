@@ -2,47 +2,60 @@
 #include "LEDs.h"
 #include "Rotary.h"
 
-int sensorPin = A0;    // select the input pin for the potentiometer
-int ledPin = 9;      // select the pin for the LED
-int sensorValue = 0;  // variable to store the value coming from the sensor
-byte mapping[256];
+static const uint8_t NUM_BUTTONS = 4;
+static const uint8_t BUTTON_PINS[NUM_BUTTONS] = {8, 9, 10, 11};
+
+uint8_t lastButtonState[NUM_BUTTONS] = {HIGH};
+uint8_t analogValueToColorMapping[256];
+
 Rotary rotary;
 Rotary::Action action;
 LEDs leds;
 
 void setup() {
+  Serial.begin(115200);
   leds.init();
-  // Serial.begin(115200);
-  // for (int i = 0; i < 256; i++) {
-  //   mapping[i] = (double)i * i / (255.0);
-  //   Serial.println(mapping[i]);
-  // }
+  rotary.setup();
+  for (uint8_t i = 0; i < NUM_BUTTONS; i++) {
+    pinMode(BUTTON_PINS[i], INPUT_PULLUP);
+  }
+  for (uint16_t i = 0; i < 256; i++) {
+    analogValueToColorMapping[i] = 2 + (i >> 1); // TODO: better mapping
+  }
+}
+
+bool buttonPressed(uint8_t index) {
+  uint8_t state = digitalRead(BUTTON_PINS[index]);
+  if (state == LOW && lastButtonState[index] == HIGH) {
+    lastButtonState[index] = LOW;
+    return true;
+  };
+  lastButtonState[index] = state;
+  return false;
 }
 
 void loop() {
-  leds.updateSingleLED(analogRead(ANALOG_R_IN_PIN) >> 2, analogRead(ANALOG_G_IN_PIN) >> 2, analogRead(ANALOG_B_IN_PIN) >> 2);
-  delay(20);
-// #ifdef TEST_SLIDER
-//   sensorValue = ;
-//   analogWrite(ledPin, mapping[sensorValue]);
-//
-// #ifdef DEBUG
-//   Serial.println(sensorValue);
-//   delay(100);
-// #endif
-//
-// #else
-//   action = rotary.waitForAction();
-//   switch (action) {
-//     case Rotary::LEFT:
-//       if (sensorValue > 0) sensorValue -= 4;
-//       break;
-//     case Rotary::RIGHT:
-//       if (sensorValue < 252) sensorValue += 4;
-//       break;
-//     default:
-//       Serial.println("Unknown action");
-//   }
-//   analogWrite(ledPin, sensorValue);
-// #endif
+  uint8_t r = analogValueToColorMapping[analogRead(ANALOG_R_IN_PIN) >> 2];
+  uint8_t g = analogValueToColorMapping[analogRead(ANALOG_G_IN_PIN) >> 2];
+  uint8_t b = analogValueToColorMapping[analogRead(ANALOG_B_IN_PIN) >> 2];
+  leds.updateSingleLED(r, g, b);
+
+  for (uint8_t i = 0; i < NUM_BUTTONS; i++) {
+    if (buttonPressed(i)) leds.toggleStripLED(i, r, g, b);
+  }
+
+  action = rotary.read();
+  Serial.println("action");
+  switch (action) {
+    case Rotary::LEFT:
+      Serial.println("LEFT");
+      leds.scrollStripToLeft();
+      break;
+    case Rotary::RIGHT:
+      Serial.println("RIGHT");
+      leds.scrollStripToRight();
+      break;
+    default:
+      break;
+  }
 }

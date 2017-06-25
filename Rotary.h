@@ -16,6 +16,7 @@ class Rotary {
 #endif
 
     Rotary();
+    void setup();
     Action read();
     Action waitForAction();
 
