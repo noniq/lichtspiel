@@ -12,8 +12,8 @@
 class LEDs {
   public:
     void init();
-    void updateSingleLED(uint8_t colorR, uint8_t colorG, uint8_t colorB);
-    void toggleStripLED(uint8_t index, uint8_t colorR, uint8_t colorG, uint8_t colorB);
+    void updateSingleLED(uint8_t colorH, uint8_t colorS, uint8_t colorV);
+    void toggleStripLED(uint8_t index, uint8_t colorH, uint8_t colorS, uint8_t colorV);
     void scrollStripToLeft();
     void scrollStripToRight();
   private:

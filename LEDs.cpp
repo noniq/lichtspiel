@@ -7,15 +7,15 @@ void LEDs::init() {
   currentIndex = 0;
 }
 
-void LEDs::updateSingleLED(uint8_t colorR, uint8_t colorG, uint8_t colorB) {
-  singleStrip[0].setRGB(colorR, colorG, colorB);
+void LEDs::updateSingleLED(uint8_t colorH, uint8_t colorS, uint8_t colorV) {
+  singleStrip[0].setHSV(colorH, colorS, colorV);
   FastLED.show();
 }
 
-void LEDs::toggleStripLED(uint8_t index, uint8_t colorR, uint8_t colorG, uint8_t colorB) {
+void LEDs::toggleStripLED(uint8_t index, uint8_t colorH, uint8_t colorS, uint8_t colorV) {
   uint8_t stripIndex = MAIN_STRIP_TOGGLE_OFFSET + index;
   if ((mainStrip[stripIndex].r == 0) && (mainStrip[stripIndex].g == 0) && (mainStrip[stripIndex].b == 0)) {
-    mainStrip[stripIndex].setRGB(colorR, colorG, colorB);
+    mainStrip[stripIndex].setHSV(colorH, colorS, colorV);
   } else {
     mainStrip[stripIndex] = 0;
   }
