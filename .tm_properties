@@ -1,4 +1,4 @@
-TM_MAKE_RUN_TARGET=upload
+TM_MAKE_RUN_TARGET=ispload
 
 [ *.{cpp,h} ]
 fileType = source.c++.arduino

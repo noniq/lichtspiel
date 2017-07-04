@@ -7,7 +7,7 @@
 #define SINGLE_STRIP_PIN 6
 #define MAIN_STRIP_PIN 5
 #define MAIN_STRIP_NUM_LEDS 24
-#define MAIN_STRIP_TOGGLE_OFFSET 10
+#define MAIN_STRIP_TOGGLE_OFFSET 5
 
 class LEDs {
   public:

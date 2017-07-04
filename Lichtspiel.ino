@@ -2,8 +2,8 @@
 #include "LEDs.h"
 #include "Rotary.h"
 
-static const uint8_t NUM_BUTTONS = 4;
-static const uint8_t BUTTON_PINS[NUM_BUTTONS] = {8, 9, 10, 11};
+static const uint8_t NUM_BUTTONS = 5;
+static const uint8_t BUTTON_PINS[NUM_BUTTONS] = {9, 13, 10, 12, 11};
 
 uint8_t lastButtonState[NUM_BUTTONS] = {HIGH};
 uint8_t mapS[256];
