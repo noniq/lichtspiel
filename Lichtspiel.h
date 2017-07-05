@@ -1,5 +1,5 @@
 #define ROTARY_PIN_A  2 // DIL pin 4
-#define ROTARY_PIN_B  3 // DIL pin 5
+#define ROTARY_PIN_B  4 // DIL pin 6
 #define ROTARY_PORT  PIND
 
 #define ANALOG_H_IN_PIN 1
