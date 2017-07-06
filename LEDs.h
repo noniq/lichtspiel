@@ -6,13 +6,13 @@
 
 #define SINGLE_STRIP_PIN 6
 #define MAIN_STRIP_PIN 5
-#define MAIN_STRIP_NUM_LEDS 24
+#define MAIN_STRIP_NUM_LEDS 15
 #define MAIN_STRIP_TOGGLE_OFFSET 5
 
 class LEDs {
   public:
     void setup();
-    boolean updateSingleLED(uint8_t colorH, uint8_t colorS, uint8_t colorV);
+    void updateSingleLED(uint8_t colorH, uint8_t colorS, uint8_t colorV);
     void toggleStripLED(uint8_t index, uint8_t colorH, uint8_t colorS, uint8_t colorV);
     void scrollStripToLeft();
     void scrollStripToRight();

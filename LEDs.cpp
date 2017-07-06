@@ -7,15 +7,9 @@ void LEDs::setup() {
   currentIndex = 0;
 }
 
-boolean LEDs::updateSingleLED(uint8_t colorH, uint8_t colorS, uint8_t colorV) {
-  static uint8_t lastH, lastS, lastV;
+void LEDs::updateSingleLED(uint8_t colorH, uint8_t colorS, uint8_t colorV) {
   singleStrip[0].setHSV(colorH, colorS, colorV);
   FastLED.show();
-  boolean changed = colorH != lastH || colorS != lastS || colorV || lastV;
-  lastH = colorH;
-  lastS = colorS;
-  lastV = colorV;
-  return changed;
 }
 
 void LEDs::toggleStripLED(uint8_t index, uint8_t colorH, uint8_t colorS, uint8_t colorV) {
