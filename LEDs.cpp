@@ -37,3 +37,11 @@ void LEDs::scrollStripToRight() {
   }
   mainStrip[0] = last;
 }
+
+void LEDs::off() {
+  singleStrip[0] = 0;
+  for (uint8_t i = 0; i < MAIN_STRIP_NUM_LEDS; i++) {
+    mainStrip[i] = 0;
+  }
+  FastLED.show();
+}

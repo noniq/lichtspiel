@@ -8,9 +8,11 @@ class Pulser {
     Pulser(uint8_t _pin);
     void pulse();
   private:
+    static const uint8_t delay = 15;
     uint8_t pin;
-    uint16_t counter, value;
+    uint16_t value;
     int8_t direction;
+    uint32_t lastUpdate;
 };
 
 #endif

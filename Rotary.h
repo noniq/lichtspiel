@@ -15,7 +15,7 @@ class Rotary {
 		static const uint32_t TIMEOUT_MILLIS = 120 * 1000UL;
 #endif
 
-    Rotary(uint8_t _pinA, uint8_t _pinB, uint8_t _port);
+    Rotary();
     void setup();
     Action read();
     Action waitForAction();

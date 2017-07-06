@@ -1,21 +1,22 @@
-#include <Arduino.h>
+#include "Arduino.h"
 #include "Rotary.h"
 
+#define ROTARY_PORT PIND
+#define ROTARY_PIN_A 2
+#define ROTARY_PIN_B 4
+
 uint8_t Rotary::readEnc() {
-  return (bit_is_set(port, pinA) ? 0b01 : 0b00) | (bit_is_set(port, pinB) ? 0b10 : 0b00);
+  return (bit_is_set(ROTARY_PORT, ROTARY_PIN_A) ? 0b01 : 0b00) | (bit_is_set(ROTARY_PORT, ROTARY_PIN_B) ? 0b10 : 0b00);
 }
 
-Rotary::Rotary(uint8_t _pinA, uint8_t _pinB, uint8_t _port) {
-  pinA = _pinA;
-  pinB = _pinB;
-  port = _port;
+Rotary::Rotary() {
   _prevPos = readEnc();
   _flags = 0;
 }
 
 void Rotary::setup() {
-  pinMode(pinA, INPUT_PULLUP);
-  pinMode(pinB, INPUT_PULLUP);
+  pinMode(ROTARY_PIN_A, INPUT_PULLUP);
+  pinMode(ROTARY_PIN_B, INPUT_PULLUP);
 }
 
 Rotary::Action Rotary::read() {
