@@ -1,15 +1,21 @@
-#include "Arduino.h"
+#include <Arduino.h>
 #include "LEDs.h"
 
-void LEDs::init() {
+void LEDs::setup() {
   FastLED.addLeds<WS2812, SINGLE_STRIP_PIN, RGB>(singleStrip, 1);
   FastLED.addLeds<WS2812B, MAIN_STRIP_PIN, GRB>(mainStrip, MAIN_STRIP_NUM_LEDS);
   currentIndex = 0;
 }
 
-void LEDs::updateSingleLED(uint8_t colorH, uint8_t colorS, uint8_t colorV) {
+boolean LEDs::updateSingleLED(uint8_t colorH, uint8_t colorS, uint8_t colorV) {
+  static uint8_t lastH, lastS, lastV;
   singleStrip[0].setHSV(colorH, colorS, colorV);
   FastLED.show();
+  boolean changed = colorH != lastH || colorS != lastS || colorV || lastV;
+  lastH = colorH;
+  lastS = colorS;
+  lastV = colorV;
+  return changed;
 }
 
 void LEDs::toggleStripLED(uint8_t index, uint8_t colorH, uint8_t colorS, uint8_t colorV) {

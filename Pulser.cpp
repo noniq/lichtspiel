@@ -1,7 +1,8 @@
-#include "Arduino.h"
+#include <Arduino.h>
 #include "Pulser.h"
 
-void Pulser::init() {
+Pulser::Pulser(uint8_t _pin) {
+  pin = _pin;
   counter = 0;
   value = 255;
   direction = -1;
@@ -13,6 +14,6 @@ void Pulser::pulse() {
     counter = 0;
     value += direction;
     if (value == 280 || value == 128) direction = -direction;
-    if (value < 256) analogWrite(PULSER_PWM_PIN, value);
+    if (value < 256) analogWrite(pin, value);
   }
 }

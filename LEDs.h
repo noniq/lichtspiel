@@ -1,8 +1,8 @@
 #ifndef LEDS_H
 #define LEDS_H
 
-#include "Arduino.h"
-#include "FastLED.h"
+#include <Arduino.h>
+#include <FastLED.h>
 
 #define SINGLE_STRIP_PIN 6
 #define MAIN_STRIP_PIN 5
@@ -11,8 +11,8 @@
 
 class LEDs {
   public:
-    void init();
-    void updateSingleLED(uint8_t colorH, uint8_t colorS, uint8_t colorV);
+    void setup();
+    boolean updateSingleLED(uint8_t colorH, uint8_t colorS, uint8_t colorV);
     void toggleStripLED(uint8_t index, uint8_t colorH, uint8_t colorS, uint8_t colorV);
     void scrollStripToLeft();
     void scrollStripToRight();

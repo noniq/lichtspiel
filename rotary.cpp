@@ -1,19 +1,21 @@
-#include "Arduino.h"
-#include "Lichtspiel.h"
+#include <Arduino.h>
 #include "Rotary.h"
 
 uint8_t Rotary::readEnc() {
-  return (bit_is_set(ROTARY_PORT, ROTARY_PIN_A) ? 0b01 : 0b00) | (bit_is_set(ROTARY_PORT, ROTARY_PIN_B) ? 0b10 : 0b00);
+  return (bit_is_set(port, pinA) ? 0b01 : 0b00) | (bit_is_set(port, pinB) ? 0b10 : 0b00);
 }
 
-Rotary::Rotary() {
+Rotary::Rotary(uint8_t _pinA, uint8_t _pinB, uint8_t _port) {
+  pinA = _pinA;
+  pinB = _pinB;
+  port = _port;
   _prevPos = readEnc();
   _flags = 0;
 }
 
 void Rotary::setup() {
-  pinMode(ROTARY_PIN_A, INPUT_PULLUP);
-  pinMode(ROTARY_PIN_B, INPUT_PULLUP);
+  pinMode(pinA, INPUT_PULLUP);
+  pinMode(pinB, INPUT_PULLUP);
 }
 
 Rotary::Action Rotary::read() {
