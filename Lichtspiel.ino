@@ -32,17 +32,18 @@ Rotary::Action action;
 LEDs leds;
 Pulser resetSwitchPulser(RESET_SWITCH_LED_PIN);
 
+void powerDown() {
+  EEPROM.update(EEPROM_HALT_AFTER_RESET, 0);
+  leds.off();
+  delay(100);
+  sleep_mode();
+}
+
 void handleHaltAfterReset() {
   uint8_t haltAfterReset = EEPROM.read(EEPROM_HALT_AFTER_RESET);
   if (haltAfterReset > 1) haltAfterReset = 0;
   EEPROM.update(EEPROM_HALT_AFTER_RESET, 1 - haltAfterReset);
   if (haltAfterReset) powerDown();
-}
-
-void powerDown() {
-  EEPROM.update(EEPROM_HALT_AFTER_RESET, 0);
-  leds.off();
-  sleep_mode();
 }
 
 void setup() {
@@ -51,11 +52,13 @@ void setup() {
 #endif
   DEBUG("INIT");
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-  handleHaltAfterReset();
   interactionTimeout.reset();
 
   leds.setup();
   rotary.setup();
+
+  handleHaltAfterReset();
+
   for (uint8_t i = 0; i < NUM_BUTTONS; i++) {
     pinMode(BUTTON_PINS[i], INPUT_PULLUP);
   }
