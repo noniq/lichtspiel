@@ -88,6 +88,7 @@ bool standByButtonPressed() {
 }
 
 void enterStandBy() {
+  standBySwitchPulser.off(); // Turn off pulser while writing LED state to EEPROM.
   leds.saveStateToEEPROM();
   leds.off();
   standBy = true;

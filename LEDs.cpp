@@ -48,6 +48,14 @@ void LEDs::scrollStripToRight() {
 
 void LEDs::off() {
   singleStrip[0] = 0;
+  for (uint8_t j = 0; j < 10; j++) {
+    for (uint8_t i = 0; i < LEDS_MAIN_STRIP_NUM_LEDS; i++) {
+      mainStrip[i].fadeToBlackBy(64);
+    }
+    singleStrip[0].fadeToBlackBy(64);
+    FastLED.show();
+    delay(30);
+  }
   for (uint8_t i = 0; i < LEDS_MAIN_STRIP_NUM_LEDS; i++) {
     mainStrip[i] = 0;
   }
@@ -63,10 +71,16 @@ void LEDs::saveStateToEEPROM() {
 }
 
 void LEDs::loadStateFromEEPROM() {
-  for (uint8_t i = 0; i < LEDS_MAIN_STRIP_NUM_LEDS; i++) {
-    mainStrip[i].r = EEPROM.read(EEPROM_START_OFFSET + i * 3 + 0);
-    mainStrip[i].g = EEPROM.read(EEPROM_START_OFFSET + i * 3 + 1);
-    mainStrip[i].b = EEPROM.read(EEPROM_START_OFFSET + i * 3 + 2);
+  for (uint8_t j = 0; j < 10; j++) {
+    for (uint8_t i = 0; i < LEDS_MAIN_STRIP_NUM_LEDS; i++) {
+      mainStrip[i].r = EEPROM.read(EEPROM_START_OFFSET + i * 3 + 0);
+      mainStrip[i].g = EEPROM.read(EEPROM_START_OFFSET + i * 3 + 1);
+      mainStrip[i].b = EEPROM.read(EEPROM_START_OFFSET + i * 3 + 2);
+      for (uint8_t k = 9; k > j; k--) {
+        mainStrip[i].fadeToBlackBy(64);
+      }
+    }
+    FastLED.show();
+    delay(30);
   }
-  FastLED.show();
 }

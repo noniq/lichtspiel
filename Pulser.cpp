@@ -21,3 +21,10 @@ void Pulser::pulse() {
 void Pulser::steady() {
   analogWrite(pin, 128);
 }
+
+void Pulser::off() {
+  analogWrite(pin, 0);
+  value = 255;
+  direction = -1;
+  lastUpdate = millis();
+}
