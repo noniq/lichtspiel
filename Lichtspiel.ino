@@ -22,7 +22,7 @@ static const uint8_t STANDBY_BUTTON_PIN = 8;
 
 boolean standBy = true;
 uint8_t lastButtonState[NUM_BUTTONS] = {HIGH};
-uint8_t buttonLEDOnOff[NUM_BUTTONS] = {0};
+boolean buttonIsUpdatingLED[NUM_BUTTONS] = {false};
 
 // Generated with Ruby: (0..255).map{|i| (64 + (256 - 64) / 256.0 * i).round }.join(',')
 uint8_t mapS[256] = {
@@ -91,9 +91,6 @@ void enterStandBy() {
   leds.saveStateToEEPROM();
   leds.off();
   standBy = true;
-  for (uint8_t i = 0; i < NUM_BUTTONS; i++) {
-    buttonLEDOnOff[i] = 0;
-  }
 }
 
 void leaveStandBy() {
@@ -123,9 +120,9 @@ void loop() {
     }
 
     for (uint8_t i = 0; i < NUM_BUTTONS; i++) {
-      if (buttonPressed(i)) buttonLEDOnOff[i] = 1 - buttonLEDOnOff[i];
+      if (buttonPressed(i)) buttonIsUpdatingLED[i] = !leds.isStripLEDOn(i);
       if (buttonDown(i)) {
-        if (buttonLEDOnOff[i]) {
+        if (buttonIsUpdatingLED[i]) {
           leds.updateStripLED(i, h, mapS[s], mapV[v]);
         } else {
           leds.turnOffStripLED(i);

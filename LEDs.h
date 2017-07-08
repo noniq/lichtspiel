@@ -15,6 +15,7 @@ class LEDs {
     void updateSingleLED(uint8_t colorH, uint8_t colorS, uint8_t colorV);
     void updateStripLED(uint8_t index, uint8_t colorH, uint8_t colorS, uint8_t colorV);
     void turnOffStripLED(uint8_t index);
+    boolean isStripLEDOn(uint8_t index);
     void scrollStripToLeft();
     void scrollStripToRight();
     void off();

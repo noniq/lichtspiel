@@ -25,6 +25,11 @@ void LEDs::turnOffStripLED(uint8_t index) {
   FastLED.show();
 }
 
+boolean LEDs::isStripLEDOn(uint8_t index) {
+  uint8_t stripIndex = LEDS_MAIN_STRIP_TOGGLE_OFFSET + index;
+  return mainStrip[stripIndex].r != 0 || mainStrip[stripIndex].g != 0 || mainStrip[stripIndex].b != 0;
+}
+
 void LEDs::scrollStripToLeft() {
   CRGB first = mainStrip[0];
   for (uint8_t i = 0; i < LEDS_MAIN_STRIP_NUM_LEDS - 1; i++) {
