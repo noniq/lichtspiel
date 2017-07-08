@@ -4,10 +4,10 @@
 #include <Arduino.h>
 #include <FastLED.h>
 
-#define SINGLE_STRIP_PIN 6
-#define MAIN_STRIP_PIN 5
-#define MAIN_STRIP_NUM_LEDS 15
-#define MAIN_STRIP_TOGGLE_OFFSET 5
+#define LEDS_SINGLE_STRIP_PIN 6
+#define LEDS_MAIN_STRIP_PIN 5
+#define LEDS_MAIN_STRIP_NUM_LEDS 15
+#define LEDS_MAIN_STRIP_TOGGLE_OFFSET 5
 
 class LEDs {
   public:
@@ -18,10 +18,13 @@ class LEDs {
     void scrollStripToLeft();
     void scrollStripToRight();
     void off();
-    CRGB mainStrip[MAIN_STRIP_NUM_LEDS];
+    void saveStateToEEPROM();
+    void loadStateFromEEPROM();
+    CRGB mainStrip[LEDS_MAIN_STRIP_NUM_LEDS];
     CRGB singleStrip[1];
   private:
     uint8_t currentIndex;
+    static const uint16_t EEPROM_START_OFFSET = 0;
 };
 
 #endif

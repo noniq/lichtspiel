@@ -1,5 +1,4 @@
 #include <avr/sleep.h>
-#include <EEPROM.h>
 
 #include "InteractionTimeout.h"
 #include "LEDs.h"
@@ -89,6 +88,7 @@ bool standByButtonPressed() {
 }
 
 void enterStandBy() {
+  leds.saveStateToEEPROM();
   leds.off();
   standBy = true;
   for (uint8_t i = 0; i < NUM_BUTTONS; i++) {
@@ -97,6 +97,7 @@ void enterStandBy() {
 }
 
 void leaveStandBy() {
+  leds.loadStateFromEEPROM();
   standBySwitchPulser.steady();
   standBy = false;
   interactionTimeout.reset();
