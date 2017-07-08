@@ -10,19 +10,19 @@ void LEDs::setup() {
 
 void LEDs::updateSingleLED(uint8_t colorH, uint8_t colorS, uint8_t colorV) {
   singleStrip[0].setHSV(colorH, colorS, colorV);
-  FastLED.show();
+  show();
 }
 
 void LEDs::updateStripLED(uint8_t index, uint8_t colorH, uint8_t colorS, uint8_t colorV) {
   uint8_t stripIndex = LEDS_MAIN_STRIP_TOGGLE_OFFSET + index;
   mainStrip[stripIndex].setHSV(colorH, colorS, colorV);
-  FastLED.show();
+  show();
 }
 
 void LEDs::turnOffStripLED(uint8_t index) {
   uint8_t stripIndex = LEDS_MAIN_STRIP_TOGGLE_OFFSET + index;
   mainStrip[stripIndex] = 0;
-  FastLED.show();
+  show();
 }
 
 boolean LEDs::isStripLEDOn(uint8_t index) {
@@ -46,6 +46,10 @@ void LEDs::scrollStripToRight() {
   mainStrip[0] = last;
 }
 
+void LEDs::show() {
+  FastLED.show();
+}
+
 void LEDs::off() {
   singleStrip[0] = 0;
   for (uint8_t j = 0; j < 10; j++) {
@@ -53,13 +57,13 @@ void LEDs::off() {
       mainStrip[i].fadeToBlackBy(64);
     }
     singleStrip[0].fadeToBlackBy(64);
-    FastLED.show();
+    show();
     delay(30);
   }
   for (uint8_t i = 0; i < LEDS_MAIN_STRIP_NUM_LEDS; i++) {
     mainStrip[i] = 0;
   }
-  FastLED.show();
+  show();
 }
 
 void LEDs::saveStateToEEPROM() {
@@ -80,7 +84,7 @@ void LEDs::loadStateFromEEPROM() {
         mainStrip[i].fadeToBlackBy(64);
       }
     }
-    FastLED.show();
+    show();
     delay(30);
   }
 }

@@ -19,6 +19,7 @@ class LEDs {
     void scrollStripToLeft();
     void scrollStripToRight();
     void off();
+    void show();
     void saveStateToEEPROM();
     void loadStateFromEEPROM();
     CRGB mainStrip[LEDS_MAIN_STRIP_NUM_LEDS];

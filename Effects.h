@@ -11,13 +11,10 @@ class Effects {
 
   private:
     void scroll(uint16_t ms, Rotary::Action action);
+    void knightRider(uint16_t ms);
 
     LEDs *leds;
     uint32_t lastUpdate = 0;
-
-    static constexpr int8_t MAX_SCROLL_SPEED = 8;
-    static const uint16_t SCROLL_SPEED_TO_MS[8];
-    int8_t scrollSpeed = 2;
-};
+  };
 
 #endif
