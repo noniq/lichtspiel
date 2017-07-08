@@ -1,15 +1,17 @@
 #include <avr/sleep.h>
 
+#include "EffectPlugs.h"
+#include "Effects.h"
 #include "InteractionTimeout.h"
 #include "LEDs.h"
 #include "Rotary.h"
 #include "Pulser.h"
 
 #ifdef DEV
-static const uint16_t INTERACTION_TIMEOUT_SECONDS = 20;
+static const uint16_t INTERACTION_TIMEOUT_SECONDS = 60;
 #define DEBUG(arg); Serial.println(arg);
 #else
-static const uint16_t INTERACTION_TIMEOUT_SECONDS = 120;
+static const uint16_t INTERACTION_TIMEOUT_SECONDS = 180;
 #define DEBUG(arg);
 #endif
 static const uint8_t NUM_BUTTONS = 5;
@@ -19,7 +21,7 @@ static const uint8_t ANALOG_S_IN_PIN = 1;
 static const uint8_t ANALOG_V_IN_PIN = 2;
 static const uint8_t STANDBY_BUTTON_LED_PIN = 3;
 static const uint8_t STANDBY_BUTTON_PIN = 8;
-
+static const uint8_t EFFECT_PLUGS_PINS[4] = {A3, A4, A5, 7};
 boolean standBy = true;
 uint8_t lastButtonState[NUM_BUTTONS] = {HIGH};
 boolean buttonIsUpdatingLED[NUM_BUTTONS] = {false};
@@ -41,7 +43,8 @@ Rotary rotary;
 Rotary::Action action;
 LEDs leds;
 Pulser standBySwitchPulser(STANDBY_BUTTON_LED_PIN);
-
+EffectPlugs effectPlugs(4, EFFECT_PLUGS_PINS);
+Effects effects;
 
 void setup() {
 #ifdef DEV
@@ -51,6 +54,8 @@ void setup() {
   interactionTimeout.reset();
   leds.setup();
   rotary.setup();
+  effectPlugs.setup();
+  effects.setup(&leds);
   pinMode(STANDBY_BUTTON_PIN, INPUT_PULLUP);
   for (uint8_t i = 0; i < NUM_BUTTONS; i++) {
     pinMode(BUTTON_PINS[i], INPUT_PULLUP);
@@ -132,19 +137,23 @@ void loop() {
       }
     }
 
+    uint8_t chosenEffect = effectPlugs.pluggedConnection();
     action = rotary.read();
-    switch (action) {
-      case Rotary::LEFT:
-        leds.scrollStripToLeft();
-        interactionTimeout.reset();
-        break;
-      case Rotary::RIGHT:
-        leds.scrollStripToRight();
-        interactionTimeout.reset();
-        break;
-      default:
-        break;
+    if (chosenEffect) {
+      effects.doEffect(chosenEffect, action);
+    } else {
+      switch (action) {
+        case Rotary::LEFT:
+          leds.scrollStripToLeft();
+          break;
+        case Rotary::RIGHT:
+          leds.scrollStripToRight();
+          break;
+        default:
+          break;
+      }
     }
+    if (action != Rotary::NONE) interactionTimeout.reset();
 
     if (standByButtonPressed() || interactionTimeout.timedOut()) enterStandBy();
   }
