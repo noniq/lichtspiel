@@ -13,13 +13,14 @@ class LEDs {
   public:
     void setup();
     void updateSingleLED(uint8_t colorH, uint8_t colorS, uint8_t colorV);
-    void toggleStripLED(uint8_t index, uint8_t colorH, uint8_t colorS, uint8_t colorV);
+    void updateStripLED(uint8_t index, uint8_t colorH, uint8_t colorS, uint8_t colorV);
+    void turnOffStripLED(uint8_t index);
     void scrollStripToLeft();
     void scrollStripToRight();
     void off();
-  private:
     CRGB mainStrip[MAIN_STRIP_NUM_LEDS];
     CRGB singleStrip[1];
+  private:
     uint8_t currentIndex;
 };
 

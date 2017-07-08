@@ -2,8 +2,8 @@
 #include "Rotary.h"
 
 #define ROTARY_PORT PIND
-#define ROTARY_PIN_A 2
-#define ROTARY_PIN_B 4
+#define ROTARY_PIN_A 4
+#define ROTARY_PIN_B 2
 
 uint8_t Rotary::readEnc() {
   return (bit_is_set(ROTARY_PORT, ROTARY_PIN_A) ? 0b01 : 0b00) | (bit_is_set(ROTARY_PORT, ROTARY_PIN_B) ? 0b10 : 0b00);

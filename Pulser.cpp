@@ -13,7 +13,11 @@ void Pulser::pulse() {
   while (now - lastUpdate > delay) {
     lastUpdate += delay;
     value += direction;
-    if (value == 280 || value == 128) direction = -direction;
+    if (value == 280 || value == 160) direction = -direction;
   }
   if (value < 256) analogWrite(pin, value);
+}
+
+void Pulser::steady() {
+  analogWrite(pin, 128);
 }

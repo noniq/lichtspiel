@@ -3,7 +3,7 @@
 
 void LEDs::setup() {
   FastLED.addLeds<WS2812, SINGLE_STRIP_PIN, RGB>(singleStrip, 1);
-  FastLED.addLeds<WS2812B, MAIN_STRIP_PIN, GRB>(mainStrip, MAIN_STRIP_NUM_LEDS);
+  FastLED.addLeds<NEOPIXEL, MAIN_STRIP_PIN>(mainStrip, MAIN_STRIP_NUM_LEDS);
   currentIndex = 0;
 }
 
@@ -12,13 +12,15 @@ void LEDs::updateSingleLED(uint8_t colorH, uint8_t colorS, uint8_t colorV) {
   FastLED.show();
 }
 
-void LEDs::toggleStripLED(uint8_t index, uint8_t colorH, uint8_t colorS, uint8_t colorV) {
+void LEDs::updateStripLED(uint8_t index, uint8_t colorH, uint8_t colorS, uint8_t colorV) {
   uint8_t stripIndex = MAIN_STRIP_TOGGLE_OFFSET + index;
-  if ((mainStrip[stripIndex].r == 0) && (mainStrip[stripIndex].g == 0) && (mainStrip[stripIndex].b == 0)) {
-    mainStrip[stripIndex].setHSV(colorH, colorS, colorV);
-  } else {
-    mainStrip[stripIndex] = 0;
-  }
+  mainStrip[stripIndex].setHSV(colorH, colorS, colorV);
+  FastLED.show();
+}
+
+void LEDs::turnOffStripLED(uint8_t index) {
+  uint8_t stripIndex = MAIN_STRIP_TOGGLE_OFFSET + index;
+  mainStrip[stripIndex] = 0;
   FastLED.show();
 }
 
