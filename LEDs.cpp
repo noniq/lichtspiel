@@ -75,16 +75,19 @@ void LEDs::saveStateToEEPROM() {
 }
 
 void LEDs::loadStateFromEEPROM() {
-  for (uint8_t j = 0; j < 10; j++) {
-    for (uint8_t i = 0; i < LEDS_MAIN_STRIP_NUM_LEDS; i++) {
-      mainStrip[i].r = EEPROM.read(EEPROM_START_OFFSET + i * 3 + 0);
-      mainStrip[i].g = EEPROM.read(EEPROM_START_OFFSET + i * 3 + 1);
-      mainStrip[i].b = EEPROM.read(EEPROM_START_OFFSET + i * 3 + 2);
-      for (uint8_t k = 9; k > j; k--) {
-        mainStrip[i].fadeToBlackBy(64);
-      }
-    }
-    show();
+  for (int16_t j = 255; j > 0; j -= 26) {
+    loadStateFromEEPROMAndDim(j);
     delay(30);
   }
+  loadStateFromEEPROMAndDim(0);
+}
+
+void LEDs::loadStateFromEEPROMAndDim(uint8_t dimAmount) {
+  for (uint8_t i = 0; i < LEDS_MAIN_STRIP_NUM_LEDS; i++) {
+    mainStrip[i].r = EEPROM.read(EEPROM_START_OFFSET + i * 3 + 0);
+    mainStrip[i].g = EEPROM.read(EEPROM_START_OFFSET + i * 3 + 1);
+    mainStrip[i].b = EEPROM.read(EEPROM_START_OFFSET + i * 3 + 2);
+    mainStrip[i].fadeToBlackBy(dimAmount);
+  }
+  show();
 }

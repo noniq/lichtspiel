@@ -142,6 +142,7 @@ void loop() {
     if (chosenEffect) {
       effects.doEffect(chosenEffect, action);
     } else {
+      effects.noEffect();
       switch (action) {
         case Rotary::LEFT:
           leds.scrollStripToLeft();

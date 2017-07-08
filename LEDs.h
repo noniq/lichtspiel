@@ -22,6 +22,7 @@ class LEDs {
     void show();
     void saveStateToEEPROM();
     void loadStateFromEEPROM();
+    void loadStateFromEEPROMAndDim(uint8_t dimAmount);
     CRGB mainStrip[LEDS_MAIN_STRIP_NUM_LEDS];
     CRGB singleStrip[1];
   private:
