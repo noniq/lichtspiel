@@ -15,6 +15,7 @@ class Effects {
     void knightRider(uint32_t ms);
     void blink(boolean firstTime, Rotary::Action action);
     void makeRainbow(boolean firstTime, uint32_t ms, Rotary::Action action);
+    void colorChase(uint32_t ms, Rotary::Action action);
 
     LEDs *leds;
     uint32_t lastUpdate = 0;

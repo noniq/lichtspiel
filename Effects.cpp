@@ -14,14 +14,17 @@ void Effects::doEffect(uint8_t effect, Rotary::Action action) {
     case 1:
       scroll(ms, action);
       break;
-    case 5:
-      knightRider(ms);
+    case 2:
+      makeRainbow(effect != lastEffect, ms, action);
       break;
     case 3:
       blink(effect != lastEffect, action);
       break;
-    case 2:
-      makeRainbow(effect != lastEffect, ms, action);
+    case 4:
+      colorChase(ms, action);
+      break;
+    case 5:
+      knightRider(ms);
       break;
     default:
       break;
@@ -148,6 +151,39 @@ void Effects::makeRainbow(boolean firstTime, uint32_t ms, Rotary::Action action)
       break;
     case Rotary::RIGHT:
       if (speed < MAX_SPEED - 1) speed++;
+      break;
+    default:
+      break;
+  }
+}
+
+void Effects::colorChase(uint32_t ms, Rotary::Action action) {
+  static constexpr uint8_t DELAY_MS = 200;
+  static constexpr uint8_t COLOR_STEPS = 6;
+  static uint8_t step = 0;
+  static uint8_t colorStep = 0;
+
+  if (ms > DELAY_MS) {
+    lastUpdate = millis();
+    if (step > 0) leds->mainStrip[step - 1] = 0;
+    if (step < LEDS_MAIN_STRIP_NUM_LEDS) {
+      leds->mainStrip[step].setHSV(255.0 / COLOR_STEPS * colorStep, 250, 200);
+      step++;
+    } else {
+      colorStep++;
+      if (colorStep >= COLOR_STEPS) colorStep = 0;
+      step = 0;
+    }
+  }
+
+  switch (action) {
+    case Rotary::LEFT:
+      if (step > 0) step--;
+      leds->scrollStripToLeft();
+      break;
+    case Rotary::RIGHT:
+      if (step < LEDS_MAIN_STRIP_NUM_LEDS) step++;
+      leds->scrollStripToRight();
       break;
     default:
       break;
