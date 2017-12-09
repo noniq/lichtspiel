@@ -26,6 +26,8 @@ void Effects::doEffect(uint8_t effect, Rotary::Action action) {
     case 5:
       knightRider(ms);
       break;
+    case 6:
+      leftRightColorFade(ms, action);
     default:
       break;
   }
@@ -184,6 +186,49 @@ void Effects::colorChase(uint32_t ms, Rotary::Action action) {
     case Rotary::RIGHT:
       if (step < LEDS_MAIN_STRIP_NUM_LEDS) step++;
       leds->scrollStripToRight();
+      break;
+    default:
+      break;
+  }
+}
+
+void Effects::leftRightColorFade(uint32_t ms, Rotary::Action action) {
+  static constexpr uint8_t DELAY_MS = 50;
+  static constexpr uint8_t COLOR_STEPS = 8;
+  static uint8_t center = LEDS_MAIN_STRIP_NUM_LEDS / 2;
+  static uint8_t step = 0;
+  static uint8_t colorStep = 0;
+  static boolean turnOff = false;
+
+  if (ms > DELAY_MS) {
+    lastUpdate = millis();
+    for (uint8_t i = 0; i < step; i++) {
+      if (i <= center) {
+        leds->mainStrip[center - i].setHSV(255.0 / COLOR_STEPS * colorStep, 200, turnOff ? 0 : 200);
+      }
+      if (center + i < LEDS_MAIN_STRIP_NUM_LEDS) {
+        leds->mainStrip[center + i].setHSV(255.0 / COLOR_STEPS * colorStep, 200, turnOff ? 0 : 200);
+      }
+    }
+    leds->mainStrip[center].setHSV(0, 0, 200);
+    if (step > center && center + step >= LEDS_MAIN_STRIP_NUM_LEDS) {
+      step = 0;
+      if (turnOff) {
+        colorStep++;
+        if (colorStep == COLOR_STEPS) colorStep = 0;
+      }
+      turnOff = !turnOff;
+    } else {
+      step++;
+    }
+  }
+
+  switch (action) {
+    case Rotary::LEFT:
+      if (center > 5) center--;
+      break;
+    case Rotary::RIGHT:
+      if (center < 9) center++;
       break;
     default:
       break;
